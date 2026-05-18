@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useUserRead } from './useUserRead';
 import { observabilityService } from '@/services/reports/ObservabilityService';
 import type { UserCreationCountApiItem } from '@/types/reports';
 
@@ -9,9 +10,17 @@ export function useUserCreationCount(): {
   isLoading: boolean;
   isError: boolean;
 } {
-  const { data: result, isLoading, isError } = useQuery({
-    queryKey: ['userCreationCount'],
-    queryFn: () => observabilityService.getUserCreationCount(),
+  const { data: userReadData, isPending: isUserLoading } = useUserRead();
+
+  const rootOrgId = useMemo(() => {
+    const response = userReadData?.data?.response as Record<string, unknown> | undefined;
+    return (response?.rootOrgId as string | undefined) ?? null;
+  }, [userReadData]);
+
+  const { data: result, isLoading: isCountLoading, isError } = useQuery({
+    queryKey: ['userCreationCount', rootOrgId],
+    queryFn: () => observabilityService.getUserCreationCount(rootOrgId!),
+    enabled: !!rootOrgId,
     staleTime: 5 * 60_000,
   });
 
@@ -22,5 +31,5 @@ export function useUserCreationCount(): {
     [data],
   );
 
-  return { data, totalUsers, isLoading, isError };
+  return { data, totalUsers, isLoading: isUserLoading || isCountLoading, isError };
 }
