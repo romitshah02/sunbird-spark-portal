@@ -17,6 +17,18 @@ import { useOrgCourseSummary } from "@/hooks/useOrgCourseSummary";
 import { useContentStatusSummary } from "@/hooks/useContentStatusSummary";
 import { useUserCreationCount } from "@/hooks/useUserCreationCount";
 
+const CreatorTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ value: number; payload: { name: string } }> }) => {
+  if (!active || !payload?.length) return null;
+  const { name } = payload[0].payload;
+  const count = payload[0].value;
+  return (
+    <div className="rounded border bg-background px-3 py-2 text-sm shadow">
+      <p className="font-medium">{name}</p>
+      <p className="text-muted-foreground">Count: {count}</p>
+    </div>
+  );
+};
+
 const PIE_COLORS = [
   "hsl(var(--sunbird-ink))",
   "hsl(var(--sunbird-ginger))",
@@ -111,7 +123,7 @@ const PlatformReports = () => {
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                   <XAxis type="number" tick={{ fontSize: 11 }} />
                   <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={100} />
-                  <Tooltip />
+                  <Tooltip content={<CreatorTooltip />} />
                   <Bar dataKey="count" fill="hsl(var(--sunbird-ginger))" radius={[0, 6, 6, 0]} barSize={20} />
                 </BarChart>
               </ResponsiveContainer>
