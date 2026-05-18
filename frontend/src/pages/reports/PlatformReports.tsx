@@ -19,8 +19,10 @@ import { useUserCreationCount } from "@/hooks/useUserCreationCount";
 
 const CreatorTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ value: number; payload: { name: string } }> }) => {
   if (!active || !payload?.length) return null;
-  const { name } = payload[0].payload;
-  const count = payload[0].value;
+  const entry = payload[0];
+  if (!entry) return null;
+  const { name } = entry.payload;
+  const count = entry.value;
   return (
     <div className="rounded border bg-background px-3 py-2 text-sm shadow">
       <p className="font-medium">{name}</p>
