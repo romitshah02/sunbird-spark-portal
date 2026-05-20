@@ -17,7 +17,7 @@ import { useOrgCourseSummary } from "@/hooks/useOrgCourseSummary";
 import { useContentStatusSummary } from "@/hooks/useContentStatusSummary";
 import { useUserCreationCount } from "@/hooks/useUserCreationCount";
 
-const CreatorTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ value: number; payload: { name: string } }> }) => {
+const TopCreatorsTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ value: number; payload: { name: string } }> }) => {
   if (!active || !payload?.length) return null;
   const entry = payload[0];
   if (!entry) return null;
@@ -125,7 +125,7 @@ const PlatformReports = () => {
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                   <XAxis type="number" tick={{ fontSize: 11 }} />
                   <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={100} />
-                  <Tooltip content={<CreatorTooltip />} />
+                  <Tooltip content={<TopCreatorsTooltip />} />
                   <Bar dataKey="count" fill="hsl(var(--sunbird-ginger))" radius={[0, 6, 6, 0]} barSize={20} />
                 </BarChart>
               </ResponsiveContainer>

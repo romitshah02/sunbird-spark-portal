@@ -10,12 +10,9 @@ export function useUserCreationCount(): {
   isLoading: boolean;
   isError: boolean;
 } {
-  const { data: userReadData, isPending: isUserLoading } = useUserRead();
+  const { data: userReadData, isLoading: isUserLoading } = useUserRead();
 
-  const rootOrgId = useMemo(() => {
-    const response = userReadData?.data?.response as Record<string, unknown> | undefined;
-    return (response?.rootOrgId as string | undefined) ?? null;
-  }, [userReadData]);
+  const rootOrgId = userReadData?.data?.response?.rootOrgId ?? null;
 
   const { data: result, isLoading: isCountLoading, isError } = useQuery({
     queryKey: ['userCreationCount', rootOrgId],
