@@ -27,7 +27,7 @@ export const decorateRequestHeaders = (proxyReq: http.ClientRequest, req: Reques
         proxyReq.setHeader('X-Session-Id', sessionId);
     }
 
-    const channel = req.session?.rootOrghashTagId;
+    const channel = req.session?.rootOrghashTagId || req.get('X-Channel-Id');
     if (channel) {
         proxyReq.setHeader('X-Channel-Id', channel);
     }
