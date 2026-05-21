@@ -522,6 +522,11 @@
       "deleteFailed": "Não foi possível excluir sua conta agora. Tente novamente."
     }
   },
+  "deleteAccountLanding": {
+    "title": "Entre para excluir sua conta",
+    "message": "Você precisa estar conectado para excluir sua conta Sunbird. Faça login para continuar.",
+    "loginCta": "Entrar para continuar"
+  },
   "reports": {
     "title": "Relatórios",
     "contentReports": "Relatórios de conteúdo",

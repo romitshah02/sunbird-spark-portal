@@ -522,6 +522,11 @@
       "deleteFailed": "We could not delete your account right now. Please try again."
     }
   },
+  "deleteAccountLanding": {
+    "title": "Sign in to delete your account",
+    "message": "You need to be signed in to delete your Sunbird account. Please log in to continue.",
+    "loginCta": "Login to continue"
+  },
   "reports": {
     "title": "Reports",
     "contentReports": "Content Reports",

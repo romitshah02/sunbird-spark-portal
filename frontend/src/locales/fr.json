@@ -522,6 +522,11 @@
       "deleteFailed": "Nous ne pouvons pas supprimer votre compte pour le moment. Veuillez réessayer."
     }
   },
+  "deleteAccountLanding": {
+    "title": "Connectez-vous pour supprimer votre compte",
+    "message": "Vous devez être connecté pour supprimer votre compte Sunbird. Veuillez vous connecter pour continuer.",
+    "loginCta": "Se connecter pour continuer"
+  },
   "reports": {
     "title": "Rapports",
     "contentReports": "Rapports de contenu",
