@@ -486,6 +486,42 @@
     "loading": "Chargement de votre profil...",
     "errorLoading": "Erreur lors du chargement du profil..."
   },
+  "accountManagement": {
+    "title": "Gestion du compte",
+    "subtitle": "Gérez la manière dont votre compte Sunbird Spark est conservé.",
+    "deleteTitle": "Supprimer le compte",
+    "deleteDescription": "Supprimez définitivement votre compte et toutes vos informations personnelles ainsi que votre accès. Vos relevés d'apprentissage et votre activité sur la plateforme peuvent être conservés à des fins de rapport et de vérification. Cette action est irréversible.",
+    "deleteCta": "Supprimer le compte"
+  },
+  "deleteAccount": {
+    "entryLink": "Supprimer mon compte",
+    "title": "Supprimer votre compte",
+    "warning": "Cette action est définitive et ne peut pas être annulée.",
+    "consentIntro": "Avant de continuer, veuillez noter :",
+    "emailLabel": "Le code OTP sera envoyé à",
+    "sendOtp": "Supprimer le compte",
+    "sending": "Envoi du code OTP",
+    "otpPrompt": "Un code OTP a été envoyé à votre adresse e-mail enregistrée. Saisissez-le ci-dessous pour confirmer la suppression.",
+    "resend": "Renvoyer le code OTP",
+    "confirm": "Confirmer la suppression du compte",
+    "deleting": "Suppression...",
+    "conditions": {
+      "permanent": "Vos informations personnelles, votre profil et votre historique d'activité seront définitivement supprimés et ne pourront pas être récupérés.",
+      "featureLoss": "Pour la vérification des certificats, seul votre nom sera conservé.",
+      "ssoNoRecreate": "Vous perdrez l'accès à toutes les fonctionnalités et services ; tout abonnement ou adhésion pourra être résilié.",
+      "contentLoss": "Si vous utilisez l'authentification unique (SSO), une nouvelle connexion créera un nouveau compte sans aucune donnée historique.",
+      "dataRetention": "Tout contenu ou ressource que vous avez créé restera accessible aux autres utilisateurs. Vous en perdrez les droits de gestion.",
+      "noRestore": "Les rapports d'utilisation conserveront les données de localisation que vous avez déclarées.",
+      "understand": "Veuillez sauvegarder les données importantes et télécharger vos certificats avant de confirmer la suppression."
+    },
+    "error": {
+      "missingEmail": "Nous n'avons pas trouvé votre adresse e-mail. Veuillez en ajouter une à votre profil.",
+      "otpSendFailed": "Impossible d'envoyer le code de vérification. Veuillez réessayer.",
+      "rateLimited": "Limite de demandes OTP atteinte. Veuillez réessayer plus tard.",
+      "invalidOtp": "Le code saisi est invalide ou a expiré.",
+      "deleteFailed": "Nous ne pouvons pas supprimer votre compte pour le moment. Veuillez réessayer."
+    }
+  },
   "reports": {
     "title": "Rapports",
     "contentReports": "Rapports de contenu",
