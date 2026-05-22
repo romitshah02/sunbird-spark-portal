@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
@@ -29,7 +29,11 @@ function getActiveNav(pathname: string): string {
   return 'home';
 }
 
-const PageLayout = () => {
+interface PageLayoutProps {
+  children?: ReactNode;
+}
+
+const PageLayout = ({ children }: PageLayoutProps = {}) => {
   const { t } = useAppI18n();
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -103,7 +107,7 @@ const PageLayout = () => {
           </div>
         )}
 
-        <Outlet />
+        {children ?? <Outlet />}
       </div>
 
       <Footer />

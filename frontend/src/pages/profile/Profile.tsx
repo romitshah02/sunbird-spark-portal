@@ -3,6 +3,7 @@ import ProfileCard from "@/components/profile/ProfileCard";
 import PersonalInformation from "@/components/profile/PersonalInformation";
 import ProfileLearningList from "@/components/profile/ProfileLearningList";
 import ProfileStatsCards from "@/components/profile/ProfileStatsCards";
+import AccountManagement from "@/components/profile/AccountManagement";
 import { useUserRead } from "@/hooks/useUserRead";
 import { useAppI18n } from "@/hooks/useAppI18n";
 import useImpression from "@/hooks/useImpression";
@@ -35,6 +36,9 @@ const Profile = () => {
 
                     {/* Stats Cards Section */}
                     <ProfileStatsCards />
+
+                    {/* Account Management Section */}
+                    <AccountManagement />
 
                     {/* My Learning Section */}
                     <ProfileLearningList />
