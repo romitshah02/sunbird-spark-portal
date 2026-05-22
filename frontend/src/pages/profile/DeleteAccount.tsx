@@ -44,8 +44,8 @@ const DeleteAccount = () => {
     const generateOtp = useGenerateOtp();
     const verifyOtp = useVerifyOtp();
     const deleteUser = useDeleteUser();
-    useSystemSetting("portal_google_recaptcha_site_key");
-    const googleCaptchaSiteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+    const { data: captchaSiteKeyData } = useSystemSetting('portal_google_recaptcha_site_key');
+    const googleCaptchaSiteKey = (captchaSiteKeyData?.data as any)?.response?.value || '';
     const captchaRef = useRef<ReCAPTCHA>(null);
 
     const allConditionsAccepted = useMemo(
