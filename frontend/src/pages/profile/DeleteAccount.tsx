@@ -186,12 +186,16 @@ const DeleteAccount = () => {
     return (
         <main className="profile-main-content delete-account-main bg-white">
             <div className="delete-account-page">
-                <h1 className="delete-account-title">
-                    {t("deleteAccount.title")}
-                </h1>
-                <p className="delete-account-warning">
-                    {t("deleteAccount.warning")}
-                </p>
+                {stage === "consent" && (
+                    <>
+                        <h1 className="delete-account-title">
+                            {t("deleteAccount.title")}
+                        </h1>
+                        <p className="delete-account-warning">
+                            {t("deleteAccount.warning")}
+                        </p>
+                    </>
+                )}
 
                 {stage === "consent" ? (
                     <ConsentStep

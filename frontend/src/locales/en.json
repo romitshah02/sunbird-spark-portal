@@ -502,8 +502,12 @@
     "sendOtp": "Delete Account",
     "sending": "Sending OTP",
     "otpPrompt": "An OTP has been sent to your registered email. Enter it below to confirm deletion.",
+    "otpTitle": "Verify it's you",
+    "otpSubtitle": "We sent a 6-digit code to {{email}}",
+    "otpLabel": "Enter verification code",
+    "codeExpires": "Code expires in",
     "resend": "Resend OTP",
-    "confirm": "Confirm Account Deletion",
+    "confirm": "Confirm account deletion",
     "deleting": "Deleting...",
     "conditions": {
       "permanent": "Your personal information, profile, and activity history will be permanently deleted and cannot be recovered.",
