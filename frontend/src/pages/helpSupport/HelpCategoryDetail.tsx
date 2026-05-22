@@ -60,7 +60,7 @@ const HelpCategoryDetail = () => {
     const sanitizedFaqs = useMemo(
         () => (category?.faqs ?? []).map((faq) => ({
             ...faq,
-            answer: sanitizeHtml(faq.answer).replace(/{{APP_NAME}}/g, appName)
+            answer: sanitizeHtml(faq.answer.replace(/{{APP_NAME}}/g, appName))
         })),
         [category, appName]
     );
