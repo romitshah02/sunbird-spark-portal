@@ -36,7 +36,8 @@ describe('ConsentStep', () => {
   });
 
   it('reflects checked count in the counter and progress bar', () => {
-    renderStep({ checkedConditions: { [CONDITION_KEYS[0]]: true, [CONDITION_KEYS[1]]: true } });
+    const [firstKey, secondKey] = CONDITION_KEYS as readonly [string, string, ...string[]];
+    renderStep({ checkedConditions: { [firstKey]: true, [secondKey]: true } });
     expect(screen.getByText('2')).toBeInTheDocument();
     const progressbar = screen.getByRole('progressbar');
     expect(progressbar.getAttribute('aria-valuenow')).toBe('2');
@@ -52,7 +53,8 @@ describe('ConsentStep', () => {
   it('invokes toggleCondition when a checkbox is clicked', () => {
     const toggleCondition = vi.fn();
     renderStep({ toggleCondition });
-    const firstCheckbox = screen.getAllByRole('checkbox')[0];
+    const [firstCheckbox] = screen.getAllByRole('checkbox');
+    if (!firstCheckbox) throw new Error('expected at least one checkbox');
     fireEvent.click(firstCheckbox);
     expect(toggleCondition).toHaveBeenCalledWith(CONDITION_KEYS[0]);
   });
