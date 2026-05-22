@@ -4,6 +4,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/common/Input
 import { useAppI18n } from "@/hooks/useAppI18n";
 import { OTP_REGEX } from "@/utils/ValidationUtils";
 import { formatTime } from "@/utils/profileUtils";
+import "./deleteAccount.css";
 
 export { CONDITION_KEYS, ConsentStep } from "./ConsentStep";
 
@@ -34,32 +35,32 @@ export const OtpStep = ({
 }: OtpStepProps) => {
     const { t } = useAppI18n();
     return (
-        <div className="space-y-5 sm:space-y-6">
-            <div className="flex items-start gap-3 sm:gap-4">
-                <span className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-lg bg-red-50 text-sunbird-brick">
-                    <FiMail className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+        <div className="otp-step-root">
+            <div className="delete-step-header-row">
+                <span className="delete-step-header-icon">
+                    <FiMail className="delete-step-header-icon-svg" aria-hidden="true" />
                 </span>
-                <div className="min-w-0">
-                    <h2 className="font-rubik font-medium text-base sm:text-lg text-foreground leading-tight">
+                <div className="delete-step-title-block">
+                    <h2 className="delete-step-title">
                         {t("deleteAccount.otpTitle")}
                     </h2>
-                    <p className="font-rubik text-xs sm:text-sm text-sunbird-gray-4a mt-1 break-words">
+                    <p className="delete-step-subtitle">
                         {t("deleteAccount.otpSubtitle", { email: email || "" })}
                     </p>
                 </div>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-3 rounded-lg border border-red-200 bg-red-50 px-2.5 py-2 sm:px-3 sm:py-2.5">
-                <span className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-white text-red-600">
-                    <FiAlertTriangle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+            <div className="delete-step-warning">
+                <span className="delete-step-warning-icon">
+                    <FiAlertTriangle className="delete-step-warning-icon-svg" aria-hidden="true" />
                 </span>
-                <p className="font-rubik text-xs sm:text-sm text-red-600">
+                <p className="delete-step-warning-text">
                     {t("deleteAccount.warning")}
                 </p>
             </div>
 
-            <div className="space-y-2 sm:space-y-3">
-                <p className="font-rubik font-semibold text-xs sm:text-sm text-sunbird-obsidian">
+            <div className="otp-step-input-section">
+                <p className="otp-step-input-label">
                     {t("deleteAccount.otpLabel")}
                 </p>
                 <InputOTP
@@ -69,24 +70,20 @@ export const OtpStep = ({
                     pattern="^[0-9]*$"
                     inputMode="numeric"
                 >
-                    <InputOTPGroup className="gap-1.5 sm:gap-2">
+                    <InputOTPGroup className="otp-step-slot-group">
                         {[0, 1, 2, 3, 4, 5].map((i) => (
-                            <InputOTPSlot
-                                key={i}
-                                index={i}
-                                className="w-9 h-10 text-sm sm:w-11 sm:h-11 sm:text-base md:w-12 md:h-12 md:text-lg font-semibold border border-[hsl(var(--sunbird-gray-d9))] rounded-md font-rubik focus:border-[hsl(var(--sunbird-ginger))] focus:ring-1 focus:ring-[hsl(var(--sunbird-ginger))]"
-                            />
+                            <InputOTPSlot key={i} index={i} className="otp-step-slot" />
                         ))}
                     </InputOTPGroup>
                 </InputOTP>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-rubik">
-                <div className="flex items-center gap-1.5 sm:gap-2 text-sunbird-gray-4a">
-                    <FiClock className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+            <div className="otp-step-meta">
+                <div className="otp-step-meta-timer">
+                    <FiClock className="otp-step-meta-timer-icon" aria-hidden="true" />
                     <span>
                         {t("deleteAccount.codeExpires")}{" "}
-                        <span className="font-semibold text-sunbird-obsidian">
+                        <span className="otp-step-meta-timer-value">
                             {formatTime(resendCounter)}
                         </span>
                     </span>
@@ -95,35 +92,33 @@ export const OtpStep = ({
                     type="button"
                     onClick={onResend}
                     disabled={resendDisabled}
-                    className="font-medium text-sunbird-brick hover:text-sunbird-brick/80 transition-colors disabled:text-sunbird-gray-4a/60 disabled:cursor-not-allowed"
+                    className="otp-step-resend"
                 >
                     {t("deleteAccount.resend")}
                 </button>
             </div>
 
-            {errorMessage && (
-                <p className="text-red-600 text-xs sm:text-sm">{errorMessage}</p>
-            )}
+            {errorMessage && <p className="delete-step-error">{errorMessage}</p>}
 
-            <hr className="border-t border-[hsl(var(--sunbird-gray-d9))]" />
+            <hr className="delete-step-divider" />
 
-            <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+            <div className="delete-step-actions">
                 <Button
                     variant="outline"
                     onClick={onBack}
                     disabled={submitting}
-                    className="w-full sm:w-auto h-9 px-3 text-xs sm:h-12 sm:px-4 sm:text-sm font-rubik"
+                    className="delete-step-btn-outline"
                 >
-                    <FiArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                    <FiArrowLeft className="delete-step-btn-icon" aria-hidden="true" />
                     {t("back")}
                 </Button>
                 <Button
                     onClick={onConfirm}
                     disabled={!OTP_REGEX.test(otp) || submitting}
-                    className="w-full sm:w-auto h-9 px-3 text-xs sm:h-12 sm:px-4 sm:text-sm bg-sunbird-brick hover:bg-sunbird-brick/90 text-white font-rubik"
+                    className="delete-step-btn-primary"
                     data-edataid="delete-account-confirm"
                 >
-                    <FiTrash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                    <FiTrash2 className="delete-step-btn-icon" aria-hidden="true" />
                     {submitting ? t("deleteAccount.deleting") : t("deleteAccount.confirm")}
                 </Button>
             </div>

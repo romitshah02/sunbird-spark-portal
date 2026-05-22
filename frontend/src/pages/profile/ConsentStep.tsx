@@ -10,6 +10,7 @@ import {
 } from "react-icons/fi";
 import { Button } from "@/components/common/Button";
 import { useAppI18n } from "@/hooks/useAppI18n";
+import "./deleteAccount.css";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -83,83 +84,80 @@ export const ConsentStep = ({
     const progress = total === 0 ? 0 : Math.round((acknowledged / total) * 100);
 
     return (
-        <div className="space-y-6">
+        <div className="consent-step-root">
             <div>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
-                    <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                        <span className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-lg bg-red-50 text-sunbird-brick">
+                <div className="consent-step-header">
+                    <div className="consent-step-header-main">
+                        <span className="delete-step-header-icon">
                             <FiTrash2 className="h-4 w-4" aria-hidden="true" />
                         </span>
-                        <div className="flex-1 min-w-0">
-                            <h1 className="font-rubik font-medium text-base sm:text-lg text-foreground leading-tight">
+                        <div className="delete-step-title-block flex-1">
+                            <h1 className="delete-step-title">
                                 {t("deleteAccount.title")}
                             </h1>
-                            <p className="font-rubik text-xs sm:text-sm text-sunbird-gray-4a mt-1">
+                            <p className="delete-step-subtitle">
                                 {t("deleteAccount.subtitle")}
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-baseline justify-between gap-2 sm:flex-col sm:items-end sm:justify-start sm:text-right sm:shrink-0">
-                        <p className="font-rubik text-[11px] font-semibold uppercase tracking-wide text-sunbird-gray-4a">
+                    <div className="consent-step-counter">
+                        <p className="consent-step-counter-label">
                             {t("deleteAccount.acknowledged")}
                         </p>
-                        <p className="font-rubik text-lg sm:text-xl font-semibold text-sunbird-gray-4a leading-tight sm:mt-1">
-                            <span className="text-sunbird-brick">{acknowledged}</span>
-                            <span className="text-sunbird-gray-4a/60">/{total}</span>
+                        <p className="consent-step-counter-value">
+                            <span className="consent-step-counter-num">{acknowledged}</span>
+                            <span className="consent-step-counter-total">/{total}</span>
                         </p>
                     </div>
                 </div>
                 <div
-                    className="mt-4 h-1 rounded-full bg-red-50 overflow-hidden"
+                    className="consent-step-progress"
                     role="progressbar"
                     aria-valuenow={acknowledged}
                     aria-valuemin={0}
                     aria-valuemax={total}
                 >
                     <div
-                        className="h-full bg-sunbird-brick transition-[width] duration-200"
+                        className="consent-step-progress-fill"
                         style={{ width: `${progress}%` }}
                     />
                 </div>
             </div>
 
-            <hr className="border-t border-[hsl(var(--sunbird-gray-d9))]" />
+            <hr className="delete-step-divider" />
 
-            <div className="flex items-center gap-2 sm:gap-3 rounded-lg border border-red-200 bg-red-50 px-2.5 py-2 sm:px-3 sm:py-2.5">
-                <span className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-white text-red-600">
-                    <FiAlertTriangle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+            <div className="delete-step-warning">
+                <span className="delete-step-warning-icon">
+                    <FiAlertTriangle className="delete-step-warning-icon-svg" aria-hidden="true" />
                 </span>
-                <p className="font-rubik text-xs sm:text-sm text-red-600">
+                <p className="delete-step-warning-text">
                     {t("deleteAccount.warning")}
                 </p>
             </div>
 
             {CONSENT_SECTIONS.map(({ titleKey, Icon, iconClass, keys }) => (
-                <section key={titleKey} className="space-y-3">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <span className={`flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-sm ${iconClass}`}>
-                            <Icon className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
+                <section key={titleKey} className="consent-step-section">
+                    <div className="consent-step-section-header">
+                        <span className={`consent-step-section-icon ${iconClass}`}>
+                            <Icon className="consent-step-section-icon-svg" aria-hidden="true" />
                         </span>
-                        <h2 className="font-rubik font-semibold text-[11px] sm:text-xs uppercase tracking-wide text-sunbird-obsidian">
+                        <h2 className="consent-step-section-title">
                             {t(titleKey)}
                         </h2>
-                        <span className="flex-1 h-px bg-[hsl(var(--sunbird-gray-d9))]" />
+                        <span className="consent-step-section-line" />
                     </div>
-                    <ul className="space-y-2 pl-6 sm:pl-11">
+                    <ul className="consent-step-list">
                         {keys.map((key) => (
                             <li key={key}>
-                                <label
-                                    htmlFor={key}
-                                    className="flex items-center gap-2 py-0.5 sm:gap-3 sm:py-1 cursor-pointer"
-                                >
+                                <label htmlFor={key} className="consent-step-list-item">
                                     <input
                                         type="checkbox"
                                         id={key}
                                         checked={!!checkedConditions[key]}
                                         onChange={() => toggleCondition(key)}
-                                        className="h-3.5 w-3.5 sm:h-4 sm:w-4 rounded accent-sunbird-brick cursor-pointer shrink-0"
+                                        className="consent-step-checkbox"
                                     />
-                                    <span className="font-rubik text-xs sm:text-sm text-sunbird-obsidian leading-snug">
+                                    <span className="consent-step-list-text">
                                         {t(key)}
                                     </span>
                                 </label>
@@ -169,23 +167,23 @@ export const ConsentStep = ({
                 </section>
             ))}
 
-            {errorMessage && <p className="font-rubik text-sm text-red-600">{errorMessage}</p>}
+            {errorMessage && <p className="delete-step-error">{errorMessage}</p>}
 
-            <hr className="border-t border-[hsl(var(--sunbird-gray-d9))]" />
+            <hr className="delete-step-divider" />
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-1.5 sm:gap-2 font-rubik text-xs sm:text-sm text-sunbird-gray-4a min-w-0">
-                    <FiMail className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" aria-hidden="true" />
-                    <span className="truncate">
+            <div className="consent-step-footer">
+                <div className="consent-step-otp-delivery">
+                    <FiMail className="consent-step-otp-delivery-icon" aria-hidden="true" />
+                    <span className="consent-step-otp-delivery-text">
                         {t("deleteAccount.otpDelivery")}{" "}
-                        <strong className="text-sunbird-obsidian">{email || "—"}</strong>
+                        <strong className="consent-step-otp-delivery-email">{email || "—"}</strong>
                     </span>
                 </div>
-                <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:shrink-0">
+                <div className="consent-step-footer-actions">
                     <Button
                         variant="outline"
                         onClick={onCancel}
-                        className="w-full sm:w-auto h-9 px-3 text-xs sm:h-12 sm:px-4 sm:text-sm font-rubik"
+                        className="delete-step-btn-outline"
                         data-edataid="delete-account-cancel"
                     >
                         {t("cancel")}
@@ -193,10 +191,10 @@ export const ConsentStep = ({
                     <Button
                         onClick={onSendOtp}
                         disabled={!allConditionsAccepted || !email || isSending}
-                        className="w-full sm:w-auto h-9 px-3 text-xs sm:h-12 sm:px-4 sm:text-sm bg-sunbird-brick hover:bg-sunbird-brick/90 text-white font-rubik"
+                        className="delete-step-btn-primary"
                         data-edataid="delete-account-send-otp"
                     >
-                        <FiTrash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                        <FiTrash2 className="delete-step-btn-icon" aria-hidden="true" />
                         {isSending ? t("deleteAccount.sending") : t("deleteAccount.sendOtp")}
                     </Button>
                 </div>
