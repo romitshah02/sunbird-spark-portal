@@ -7,9 +7,13 @@ import { useUserId } from "@/hooks/useAuthInfo";
 import { useGenerateOtp, useVerifyOtp } from "@/hooks/useOtp";
 import { useSystemSetting } from "@/hooks/useSystemSetting";
 import { useDeleteUser, useUserRoles } from "@/hooks/useUser";
+import useImpression from "@/hooks/useImpression";
+import useInteract from "@/hooks/useInteract";
 import PageLoader from "@/components/common/PageLoader";
 import { OTP_REGEX } from "@/utils/ValidationUtils";
 import { CONDITION_KEYS, ConsentStep, OtpStep } from "./DeleteAccountSteps";
+
+const TELEMETRY_PAGE_ID = "delete-account-page";
 
 type Stage = "consent" | "otp";
 const RESEND_COOLDOWN_SECONDS = 20;
@@ -17,6 +21,8 @@ const RESEND_COOLDOWN_SECONDS = 20;
 const DeleteAccount = () => {
     const { t } = useAppI18n();
     const navigate = useNavigate();
+    useImpression({ type: "view", pageid: TELEMETRY_PAGE_ID, env: "profile" });
+    const { interact } = useInteract();
 
     const { data: userResponse, isLoading } = useUserRead();
     const user = userResponse?.data?.response;
@@ -82,6 +88,11 @@ const DeleteAccount = () => {
     ) => {
         try {
             await generateOtp.mutateAsync({ request: buildOtpRequest(), captchaResponse });
+            interact({
+                id: "delete-account-otp-sent",
+                pageid: TELEMETRY_PAGE_ID,
+                extra: { action },
+            });
             if (action === "send") {
                 setStage("otp");
             } else {
@@ -96,6 +107,11 @@ const DeleteAccount = () => {
                     ? t("deleteAccount.error.rateLimited")
                     : t("deleteAccount.error.otpSendFailed"),
             );
+            interact({
+                id: "delete-account-otp-failed",
+                pageid: TELEMETRY_PAGE_ID,
+                extra: { action, status: status ?? null },
+            });
             captchaRef.current?.reset();
         }
     };
@@ -124,6 +140,7 @@ const DeleteAccount = () => {
             setErrorMessage(t("deleteAccount.error.missingEmail"));
             return;
         }
+        interact({ id: "delete-account-submit", pageid: TELEMETRY_PAGE_ID });
         triggerOtpRequest("send");
     };
 
@@ -150,8 +167,10 @@ const DeleteAccount = () => {
                     },
                 },
             });
+            interact({ id: "delete-account-otp-verified", pageid: TELEMETRY_PAGE_ID });
         } catch {
             setErrorMessage(t("deleteAccount.error.invalidOtp"));
+            interact({ id: "delete-account-otp-invalid", pageid: TELEMETRY_PAGE_ID });
             setSubmitting(false);
             setOtp("");
             return;
@@ -160,13 +179,16 @@ const DeleteAccount = () => {
         try {
             if (!resolvedUserId) {
                 setErrorMessage(t("deleteAccount.error.deleteFailed"));
+                interact({ id: "delete-account-delete-failed", pageid: TELEMETRY_PAGE_ID });
                 setSubmitting(false);
                 return;
             }
             await deleteUser.mutateAsync({ userId: resolvedUserId });
+            interact({ id: "delete-account-success", pageid: TELEMETRY_PAGE_ID });
             window.location.assign("/portal/logout");
         } catch {
             setErrorMessage(t("deleteAccount.error.deleteFailed"));
+            interact({ id: "delete-account-delete-failed", pageid: TELEMETRY_PAGE_ID });
             setSubmitting(false);
         }
     };

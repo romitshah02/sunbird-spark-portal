@@ -1,11 +1,13 @@
 import { FiAlertCircle } from "react-icons/fi";
 import { useAppI18n } from "@/hooks/useAppI18n";
+import useImpression from "@/hooks/useImpression";
 import sunbirdLogo from "@/assets/sunbird-logo.svg";
 
 const DELETE_ACCOUNT_PATH = "/profile/delete";
 
 const DeleteAccountLanding = () => {
     const { t } = useAppI18n();
+    useImpression({ type: "view", pageid: "delete-account-landing", env: "profile" });
 
     const handleLogin = () => {
         const returnTo = encodeURIComponent(DELETE_ACCOUNT_PATH);
