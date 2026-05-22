@@ -1,36 +1,16 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { FiAlertCircle } from "react-icons/fi";
 import { useAppI18n } from "@/hooks/useAppI18n";
-import { useIsAuthenticated } from "@/hooks/useAuthInfo";
-import PageLoader from "@/components/common/PageLoader";
 import sunbirdLogo from "@/assets/sunbird-logo.svg";
 
-const DELETE_ACCOUNT_PATH = "/profile/delete-account";
+const DELETE_ACCOUNT_PATH = "/profile/delete";
 
 const DeleteAccountLanding = () => {
     const { t } = useAppI18n();
-    const navigate = useNavigate();
-    const { isAuthenticated, isLoading } = useIsAuthenticated();
-
-    useEffect(() => {
-        if (!isLoading && isAuthenticated) {
-            navigate(DELETE_ACCOUNT_PATH, { replace: true });
-        }
-    }, [isLoading, isAuthenticated, navigate]);
 
     const handleLogin = () => {
         const returnTo = encodeURIComponent(DELETE_ACCOUNT_PATH);
         window.location.href = `/portal/login?prompt=none&returnTo=${returnTo}`;
     };
-
-    if (isLoading || isAuthenticated) {
-        return (
-            <main className="profile-main-content delete-account-main bg-white">
-                <PageLoader fullPage={false} />
-            </main>
-        );
-    }
 
     return (
         <main className="profile-main-content delete-account-main bg-white">

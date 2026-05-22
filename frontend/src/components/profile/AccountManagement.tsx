@@ -40,7 +40,7 @@ const AccountManagement = () => {
                     </div>
                 </div>
                 <Link
-                    to="/profile/delete-account"
+                    to="/profile/delete"
                     className="account-management-danger-cta"
                     data-edataid="profile-delete-account-link"
                 >
