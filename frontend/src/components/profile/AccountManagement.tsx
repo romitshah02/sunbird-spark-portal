@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi";
 import { useAppI18n } from "@/hooks/useAppI18n";
+import { useUserRoles } from "@/hooks/useUser";
 
 const AccountManagement = () => {
     const { t } = useAppI18n();
+    const { data: roles, isLoading } = useUserRoles();
+
+    if (isLoading || (roles ?? []).some((r) => r.role === "ORG_ADMIN")) {
+        return null;
+    }
+
     return (
         <section className="account-management-card">
             <div className="account-management-header">

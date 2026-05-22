@@ -64,10 +64,11 @@ export const ConsentStep = ({
 
             {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-2">
                 <Button
                     variant="outline"
                     onClick={onCancel}
+                    className="w-full sm:w-auto"
                     data-edataid="delete-account-cancel"
                 >
                     {t("cancel")}
@@ -75,7 +76,7 @@ export const ConsentStep = ({
                 <Button
                     onClick={onSendOtp}
                     disabled={!allConditionsAccepted || !email || isSending}
-                    className="bg-sunbird-brick hover:bg-sunbird-brick/90 text-white"
+                    className="w-full sm:w-auto bg-sunbird-brick hover:bg-sunbird-brick/90 text-white"
                     data-edataid="delete-account-send-otp"
                 >
                     {isSending ? t("deleteAccount.sending") : t("deleteAccount.sendOtp")}
@@ -117,7 +118,7 @@ export const OtpStep = ({
                 {t("deleteAccount.otpPrompt", { email })}
             </p>
 
-            <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="flex items-center justify-center mb-4">
                 <InputOTP
                     maxLength={6}
                     value={otp}
@@ -125,12 +126,12 @@ export const OtpStep = ({
                     pattern="^[0-9]*$"
                     inputMode="numeric"
                 >
-                    <InputOTPGroup className="gap-2">
+                    <InputOTPGroup className="gap-1.5 sm:gap-2">
                         {[0, 1, 2, 3, 4, 5].map((i) => (
                             <InputOTPSlot
                                 key={i}
                                 index={i}
-                                className="w-[50px] h-[50px] text-[18px] font-semibold border border-[hsl(var(--sunbird-gray-d9))] rounded-[10px] font-rubik focus:border-[hsl(var(--sunbird-ginger))] focus:ring-1 focus:ring-[hsl(var(--sunbird-ginger))]"
+                                className="w-9 h-10 text-base sm:w-12 sm:h-12 sm:text-lg md:w-[50px] md:h-[50px] md:text-[18px] font-semibold border border-[hsl(var(--sunbird-gray-d9))] rounded-[10px] font-rubik focus:border-[hsl(var(--sunbird-ginger))] focus:ring-1 focus:ring-[hsl(var(--sunbird-ginger))]"
                             />
                         ))}
                     </InputOTPGroup>
@@ -155,14 +156,19 @@ export const OtpStep = ({
                 <p className="text-red-600 text-sm text-center">{errorMessage}</p>
             )}
 
-            <div className="flex gap-3 justify-center pt-2">
-                <Button variant="outline" onClick={onBack} disabled={submitting}>
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-center pt-2">
+                <Button
+                    variant="outline"
+                    onClick={onBack}
+                    disabled={submitting}
+                    className="w-full sm:w-auto"
+                >
                     {t("back")}
                 </Button>
                 <Button
                     onClick={onConfirm}
                     disabled={!OTP_REGEX.test(otp) || submitting}
-                    className="bg-sunbird-brick hover:bg-sunbird-brick/90 text-white"
+                    className="w-full sm:w-auto bg-sunbird-brick hover:bg-sunbird-brick/90 text-white"
                     data-edataid="delete-account-confirm"
                 >
                     {submitting ? t("deleteAccount.deleting") : t("deleteAccount.confirm")}

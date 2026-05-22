@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useAppI18n } from "@/hooks/useAppI18n";
 import { useUserRead } from "@/hooks/useUserRead";
 import { useUserId } from "@/hooks/useAuthInfo";
 import { useGenerateOtp, useVerifyOtp } from "@/hooks/useOtp";
 import { useSystemSetting } from "@/hooks/useSystemSetting";
-import { useDeleteUser } from "@/hooks/useUser";
+import { useDeleteUser, useUserRoles } from "@/hooks/useUser";
 import PageLoader from "@/components/common/PageLoader";
 import { OTP_REGEX } from "@/utils/ValidationUtils";
 import { CONDITION_KEYS, ConsentStep, OtpStep } from "./DeleteAccountSteps";
@@ -22,6 +22,8 @@ const DeleteAccount = () => {
     const user = userResponse?.data?.response;
     const resolvedUserId = useUserId();
     const email = user?.email;
+    const { data: roles, isLoading: rolesLoading } = useUserRoles();
+    const isAdmin = (roles ?? []).some((r) => r.role === "ORG_ADMIN");
 
     const [stage, setStage] = useState<Stage>("consent");
     const [checkedConditions, setCheckedConditions] = useState<Record<string, boolean>>({});
@@ -169,12 +171,16 @@ const DeleteAccount = () => {
         }
     };
 
-    if (isLoading) {
+    if (isLoading || rolesLoading) {
         return (
             <main className="profile-main-content">
                 <PageLoader message={t("profilePage.loading")} fullPage={false} />
             </main>
         );
+    }
+
+    if (isAdmin) {
+        return <Navigate to="/profile" replace />;
     }
 
     return (
