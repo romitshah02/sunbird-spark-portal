@@ -54,7 +54,8 @@
 .content-review-player-inner div.content-player-embed,
 .content-review-player-inner sunbird-pdf-player,
 .content-review-player-inner sunbird-epub-player,
-.content-review-player-inner sunbird-quml-player {
+.content-review-player-inner sunbird-quml-player,
+.content-review-player-inner qti3-test-runner {
   height: 100%;
 }
 

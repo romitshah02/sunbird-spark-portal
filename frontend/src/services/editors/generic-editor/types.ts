@@ -65,6 +65,7 @@ export const GENERIC_EDITOR_MIME_TYPES = [
   'application/vnd.ekstep.h5p-archive',
   'video/webm',
   'text/x-url',
+  'application/vnd.ekstep.qti-archive',
 ] as const;
 
 export type GenericEditorMimeType = (typeof GENERIC_EDITOR_MIME_TYPES)[number];

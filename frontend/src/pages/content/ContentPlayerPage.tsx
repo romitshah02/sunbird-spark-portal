@@ -10,6 +10,7 @@ import { ContentPlayer as PlayerComponent } from "@/components/players";
 import { useContentPlayer } from "@/hooks/useContentPlayer";
 import { useContentRead, useContentSearch } from "@/hooks/useContent";
 import { useQumlContent } from "@/hooks/useQumlContent";
+import { useQtiContent } from "@/hooks/useQtiContent";
 import { useAppI18n } from "@/hooks/useAppI18n";
 import { TelemetryTracker } from '@/components/telemetry/TelemetryTracker';
 import useImpression from "@/hooks/useImpression";
@@ -45,18 +46,25 @@ const ContentPlayerPage = () => {
   // Check if this is QUML content that needs special handling
   const isQumlContent = contentData?.mimeType === 'application/vnd.sunbird.questionset' ||
                        contentData?.mimeType === 'application/vnd.sunbird.question';
-  
-  // Use QUML hook for question sets, regular content hook for others
-  const { 
-    data: qumlData, 
-    isLoading: isQumlLoading, 
-    error: qumlError 
+  const isQtiContent = contentData?.mimeType === 'application/vnd.ekstep.qti-archive';
+
+  // Use QUML hook for question sets, QTI hook for QTI content, regular content hook for others
+  const {
+    data: qumlData,
+    isLoading: isQumlLoading,
+    error: qumlError
   } = useQumlContent(contentId || '', { enabled: isQumlContent });
-  
+
+  const {
+    data: qtiData,
+    isLoading: isQtiLoading,
+    error: qtiError
+  } = useQtiContent(contentData, { enabled: isQtiContent });
+
   // Determine which data to use based on content type
-  const playerMetadata = isQumlContent ? qumlData : contentData;
-  const playerIsLoading = isQumlContent ? isQumlLoading : isLoading;
-  const playerError = isQumlContent ? qumlError : error;
+  const playerMetadata = isQtiContent ? qtiData : isQumlContent ? qumlData : contentData;
+  const playerIsLoading = isQtiContent ? isQtiLoading : isQumlContent ? isQumlLoading : isLoading;
+  const playerError = isQtiContent ? qtiError : isQumlContent ? qumlError : error;
   
   // Search for related content based on mime type
   const { data: relatedContentData } = useContentSearch({

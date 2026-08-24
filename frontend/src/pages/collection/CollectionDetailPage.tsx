@@ -4,6 +4,7 @@ import { useAppI18n } from "@/hooks/useAppI18n";
 import { useCollectionPageData } from "@/hooks/useCollectionPageData";
 import { useContentRead, useContentSearch } from "@/hooks/useContent";
 import { useQumlContent } from "@/hooks/useQumlContent";
+import { useQtiContent } from "@/hooks/useQtiContent";
 import { useCollectionDetailPlayer } from "@/hooks/useCollectionDetailPlayer";
 import { mapSearchContentToRelatedContentItems } from "@/services/collection";
 import { useCollectionDetailSelfAssess } from "@/hooks/useCollectionDetailSelfAssess";
@@ -104,8 +105,10 @@ const CollectionDetailPage = () => {
   const selectedContentData = contentReadData?.data?.content;
   const isQumlContent = selectedContentData?.mimeType === 'application/vnd.sunbird.questionset' ||
     selectedContentData?.mimeType === 'application/vnd.sunbird.question';
+  const isQtiContent = selectedContentData?.mimeType === 'application/vnd.ekstep.qti-archive';
   const { data: qumlData, isLoading: qumlIsLoading, error: qumlError } = useQumlContent(contentId ?? '', { enabled: isQumlContent });
-  const rawPlayerMetadata = isQumlContent ? qumlData : selectedContentData;
+  const { data: qtiData, isLoading: qtiIsLoading, error: qtiError } = useQtiContent(selectedContentData, { enabled: isQtiContent });
+  const rawPlayerMetadata = isQtiContent ? qtiData : isQumlContent ? qumlData : selectedContentData;
 
   const { t } = useAppI18n();
 
@@ -127,12 +130,12 @@ const CollectionDetailPage = () => {
     contentCreatorPrivilege,
     contentAttemptInfoMap: contentAttemptInfoMap ?? {},
     rawPlayerMetadata,
-    playerIsLoading: contentId ? (isQumlContent ? qumlIsLoading : contentIsLoading) : false,
+    playerIsLoading: contentId ? (isQtiContent ? qtiIsLoading : isQumlContent ? qumlIsLoading : contentIsLoading) : false,
     t,
   });
 
-  const playerIsLoading = contentId ? (isQumlContent ? qumlIsLoading : contentIsLoading) : false;
-  const playerError = isQumlContent ? qumlError : contentError;
+  const playerIsLoading = contentId ? (isQtiContent ? qtiIsLoading : isQumlContent ? qumlIsLoading : contentIsLoading) : false;
+  const playerError = isQtiContent ? qtiError : isQumlContent ? qumlError : contentError;
 
   const currentContentStatus = contentId ? contentStatusMap?.[contentId] : undefined;
   const { handlePlayerEvent, handleTelemetryEvent } = useCollectionDetailPlayer({

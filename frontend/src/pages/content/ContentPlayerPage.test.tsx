@@ -42,6 +42,7 @@ vi.mock('@/hooks/useTelemetry', () => ({
 const mockUseContentRead = vi.fn();
 const mockUseContentSearch = vi.fn();
 const mockUseQumlContent = vi.fn();
+const mockUseQtiContent = vi.fn();
 
 vi.mock('@/hooks/useContent', () => ({
   useContentRead: (id: string) => mockUseContentRead(id),
@@ -50,6 +51,10 @@ vi.mock('@/hooks/useContent', () => ({
 
 vi.mock('@/hooks/useQumlContent', () => ({
   useQumlContent: (id: string, opts: any) => mockUseQumlContent(id, opts),
+}));
+
+vi.mock('@/hooks/useQtiContent', () => ({
+  useQtiContent: (content: any, opts: any) => mockUseQtiContent(content, opts),
 }));
 
 vi.mock('@/hooks/useAppI18n', () => ({
@@ -114,6 +119,7 @@ describe('ContentPlayerPage', () => {
       error: null,
     });
     mockUseQumlContent.mockReturnValue({ data: null, isLoading: false, error: null });
+    mockUseQtiContent.mockReturnValue({ data: null, isLoading: false, error: null });
     mockUseContentSearch.mockReturnValue({ data: null });
   });
 

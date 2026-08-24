@@ -6,6 +6,13 @@ interface UseQumlContentOptions {
   enabled?: boolean;
 }
 
+function parseOutcomeDeclaration(raw: unknown): Record<string, unknown> {
+  if (typeof raw === 'string') {
+    try { return JSON.parse(raw); } catch { return {}; }
+  }
+  return (raw && typeof raw === 'object') ? raw as Record<string, unknown> : {};
+}
+
 /**
  * Hook for fetching and processing QUML content data
  * 
@@ -71,8 +78,8 @@ export const useQumlContent = (
 
         if (node.mimeType === 'application/vnd.sunbird.question' && node.identifier) {
           const q = questionMap.get(node.identifier) || node;
+          q.outcomeDeclaration = parseOutcomeDeclaration(q.outcomeDeclaration);
           if (!_.get(q, 'outcomeDeclaration.maxScore')) {
-            if (!q.outcomeDeclaration) q.outcomeDeclaration = {};
             q.outcomeDeclaration.maxScore = {
               cardinality: 'single',
               type: 'integer',
@@ -95,9 +102,7 @@ export const useQumlContent = (
       metadata = replaceQuestionsInHierarchy(metadata);
 
       // Ensure outcomeDeclaration.maxScore structure exists
-      if (!_.get(metadata, 'outcomeDeclaration')) {
-        metadata.outcomeDeclaration = {};
-      }
+      metadata.outcomeDeclaration = parseOutcomeDeclaration(metadata.outcomeDeclaration);
       if (!_.get(metadata, 'outcomeDeclaration.maxScore')) {
         const maxScore = _.get(metadata, 'maxScore', 1);
         metadata.outcomeDeclaration.maxScore = {

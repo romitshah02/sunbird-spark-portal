@@ -36,7 +36,8 @@
 .collection-player-content div.content-player-embed,
 .collection-player-content sunbird-pdf-player,
 .collection-player-content sunbird-epub-player,
-.collection-player-content sunbird-quml-player {
+.collection-player-content sunbird-quml-player,
+.collection-player-content qti3-test-runner {
   height: 100%;
 }
 

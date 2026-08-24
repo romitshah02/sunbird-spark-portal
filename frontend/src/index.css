@@ -962,10 +962,11 @@
     width: 100%;
   }
 
-  /* PDF, EPUB, QUML: no intrinsic video dimensions, use fixed responsive heights */
+  /* PDF, EPUB, QUML, QTI: no intrinsic video dimensions, use fixed responsive heights */
   sunbird-pdf-player,
   sunbird-epub-player,
-  sunbird-quml-player {
+  sunbird-quml-player,
+  qti3-test-runner {
     display: block;
     width: 100%;
     height: 41.3125rem;
@@ -974,7 +975,8 @@
   @media (max-width: 1024px) {
     sunbird-pdf-player,
     sunbird-epub-player,
-    sunbird-quml-player {
+    sunbird-quml-player,
+    qti3-test-runner {
       height: 28rem;
     }
 
@@ -986,7 +988,8 @@
   @media (max-width: 768px) {
     sunbird-pdf-player,
     sunbird-epub-player,
-    sunbird-quml-player {
+    sunbird-quml-player,
+    qti3-test-runner {
       height: 22rem;
     }
 
@@ -998,7 +1001,8 @@
   @media (max-width: 640px) {
     sunbird-pdf-player,
     sunbird-epub-player,
-    sunbird-quml-player {
+    sunbird-quml-player,
+    qti3-test-runner {
       height: 18rem;
     }
 

@@ -9,6 +9,7 @@ import PageLoader from '@/components/common/PageLoader';
 import { useContentPlayer } from '@/hooks/useContentPlayer';
 import { useContentRead } from '@/hooks/useContent';
 import { useQumlContent } from '@/hooks/useQumlContent';
+import { useQtiContent } from '@/hooks/useQtiContent';
 import { ContentService } from '@/services/ContentService';
 import { FormService } from '@/services/FormService';
 import { CheckListFormField } from '@/types/formTypes';
@@ -61,11 +62,13 @@ const ContentReviewPage = ({ mode }: { mode: 'view' | 'review' }) => {
     contentData?.mimeType === 'application/vnd.sunbird.questionset' ||
     contentData?.mimeType === 'application/vnd.sunbird.question';
   const isEcmlContent = contentData?.mimeType === 'application/vnd.ekstep.ecml-archive';
+  const isQtiContent = contentData?.mimeType === 'application/vnd.ekstep.qti-archive';
 
   const { data: qumlData, isLoading: isQumlLoading, error: qumlError } = useQumlContent(contentId || '', { enabled: isQumlContent });
-  const playerMetadata = isQumlContent ? qumlData : contentData;
-  const playerIsLoading = isQumlContent ? isQumlLoading : isLoading;
-  const playerError = isQumlContent ? qumlError : error;
+  const { data: qtiData, isLoading: isQtiLoading, error: qtiError } = useQtiContent(contentData, { enabled: isQtiContent });
+  const playerMetadata = isQtiContent ? qtiData : isQumlContent ? qumlData : contentData;
+  const playerIsLoading = isQtiContent ? isQtiLoading : isQumlContent ? isQumlLoading : isLoading;
+  const playerError = isQtiContent ? qtiError : isQumlContent ? qumlError : error;
   const { handlePlayerEvent, handleTelemetryEvent } = useContentPlayer({});
   const clearWorkspaceQueries = useCallback(() => WORKSPACE_QUERY_KEYS.forEach((key) => queryClient.removeQueries({ queryKey: [key] })), [queryClient]);
 

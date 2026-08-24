@@ -42,6 +42,14 @@ const qumlWebComponentRoot = path.join(
 const qumlAssetsSource = path.join(qumlWebComponentRoot, 'assets/quml-player');
 const qumlFinalDest = path.join(publicRoot, 'assets/quml-player');
 
+// QTI Player paths
+const qtiWebComponentRoot = path.join(
+    __dirname,
+    'node_modules/test-qti-player-web-component-react'
+);
+const qtiAssetsSource = path.join(qtiWebComponentRoot, 'assets/qti-player');
+const qtiFinalDest = path.join(publicRoot, 'assets/qti-player');
+
 // QUML Editor — @project-sunbird/sunbird-questionset-editor-web-component-react
 // Imported as a React library via Vite, but the equation-editor modal (an
 // iframe) is only reachable via a fixed root-relative path, not a JS/CSS
@@ -126,6 +134,12 @@ try {
         fs.copyFileSync(qumlStyles, path.join(qumlFinalDest, 'sunbird-quml-player-styles.css'));
     }
 
+    // 6. Copy QTI Player assets
+    console.log(`\n📂 QTI Player Source: ${qtiAssetsSource}`);
+    fs.mkdirSync(qtiFinalDest, { recursive: true });
+    console.log('📦 Copying QTI player files to public/assets/qti-player/...');
+    copyDirectory(qtiAssetsSource, qtiFinalDest);
+
     // 7. Copy QUML Editor's equation-modal assets
     console.log(`\n📂 QUML Editor mathEquation Source: ${mathEquationAssetsSource}`);
     fs.mkdirSync(mathEquationFinalDest, { recursive: true });
@@ -161,6 +175,7 @@ try {
     console.log(`📍 Video Player: public/assets/video-player/`);
     console.log(`📍 ePub Player: public/assets/epub-player/`);
     console.log(`📍 QUML Player: public/assets/quml-player/`);
+    console.log(`📍 QTI Player: public/assets/qti-player/`);
     console.log(`📍 QUML Editor equation modal: public/assets/libs/mathEquation/`);
     console.log(`📍 Common Icons: public/assets/*.svg`);
 
