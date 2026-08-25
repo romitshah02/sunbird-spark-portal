@@ -248,4 +248,51 @@ describe('ContentRow', () => {
       expect(mockToast).not.toHaveBeenCalled();
     });
   });
+
+  describe('QTI attempt limits (hard-blocked like SelfAssess/QuestionSet)', () => {
+    const qtiNode: HierarchyContentNode = {
+      identifier: 'qti-1',
+      name: 'QTI Quiz',
+      mimeType: 'application/vnd.ekstep.qti-archive',
+      maxAttempts: 2,
+    };
+
+    it('shows the attempt badge (e.g. 1/2)', () => {
+      renderContentRow({
+        ...defaultProps,
+        node: qtiNode,
+        href: '/collection/col-1/content/qti-1',
+        contentAttemptInfoMap: { 'qti-1': { attemptCount: 1 } },
+      });
+      expect(screen.getByText('1/2')).toBeInTheDocument();
+    });
+
+    it('renders as disabled row and shows max-attempt toast on click when attempts exceeded', () => {
+      renderContentRow({
+        ...defaultProps,
+        node: qtiNode,
+        href: '/collection/col-1/content/qti-1',
+        contentAttemptInfoMap: { 'qti-1': { attemptCount: 2 } },
+      });
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      const row = screen.getByRole('button', { name: /QTI Quiz/i });
+      fireEvent.click(row);
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'courseDetails.selfAssessMaxAttempt',
+        variant: 'destructive',
+      });
+      expect(mockNavigate).not.toHaveBeenCalled();
+    });
+
+    it('renders as link when attempts not exceeded', () => {
+      renderContentRow({
+        ...defaultProps,
+        node: qtiNode,
+        href: '/collection/col-1/content/qti-1',
+        contentAttemptInfoMap: { 'qti-1': { attemptCount: 0 } },
+      });
+      const link = screen.getByRole('link', { name: /QTI Quiz/i });
+      expect(link).toHaveAttribute('href', '/collection/col-1/content/qti-1');
+    });
+  });
 });

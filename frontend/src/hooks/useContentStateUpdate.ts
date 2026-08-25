@@ -153,7 +153,8 @@ export function useContentStateUpdate({
       const isSelfAssess = (contentTypeRef.current ?? "").toLowerCase() === "selfassess";
       const isQuestionSet = (mimeType ?? "").toLowerCase() === "application/vnd.sunbird.questionset";
       const isScorm = (mimeType ?? "").toLowerCase() === "application/vnd.ekstep.scorm-archive";
-      if (!isSelfAssess && !isQuestionSet && !isScorm && currentContentStatusRef.current === ContentStatus.Completed) return;
+      const isQti = (mimeType ?? "").toLowerCase() === "application/vnd.ekstep.qti-archive";
+      if (!isSelfAssess && !isQuestionSet && !isScorm && !isQti && currentContentStatusRef.current === ContentStatus.Completed) return;
 
       const rawEvent = event?.data ?? event;
       const eid = typeof rawEvent === "string" ? "" : (event?.eid ?? (event?.data as any)?.eid ?? event?.type ?? "") as string;
@@ -225,7 +226,28 @@ export function useContentStateUpdate({
         return;
       }
 
+      // SUMMARY is the QTI player's terminal assessment event, analogous to
+      // QUML_SUMMARY. Its edata doesn't carry a reliable top-level score, so
+      // rather than parse it, receiving SUMMARY is trusted as the completion
+      // signal and whatever real per-question ASSESS events already
+      // accumulated above are flushed - same trust-the-signal approach as
+      // SelfAssess's renderer:question:submitscore handling above.
+      if (eidUpper === "SUMMARY" && isQti) {
+        if (assessmentTsRef.current != null && !sendingAssessmentRef.current && !maxAttemptsExceededRef.current) {
+          sendingAssessmentRef.current = true;
+          void sendAssessmentAndInvalidate();
+          lastSentStatusRef.current = null;
+        }
+        return;
+      }
+
       if (eidUpper === "END") {
+        // QTI fires a generic END ahead of its SUMMARY (per captured runtime
+        // telemetry) - completion/scoring is owned entirely by the SUMMARY
+        // branch above, so END is a no-op here (its edata shape isn't the
+        // same summary/endpageseen shape the SelfAssess/SCORM path below
+        // expects, so it can't safely drive progress either).
+        if (isQti) return;
         const summary = extractSummary(event);
         if (isSelfAssess || isScorm) {
           // An assessment send may already be in flight (e.g. SCORM's ASSESS-triggered

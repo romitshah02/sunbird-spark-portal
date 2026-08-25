@@ -47,8 +47,9 @@ export default function ContentRow({
   const isSelfAssess = (node.contentType ?? "") === "SelfAssess";
   const isQuestionSet = (node.mimeType ?? "") === "application/vnd.sunbird.questionset";
   const isScorm = (node.mimeType ?? "") === "application/vnd.ekstep.scorm-archive";
-  const isAssessmentContent = isSelfAssess || isQuestionSet || isScorm;
-  const isHardBlockedAssessment = isSelfAssess || isQuestionSet;
+  const isQti = (node.mimeType ?? "") === "application/vnd.ekstep.qti-archive";
+  const isAssessmentContent = isSelfAssess || isQuestionSet || isScorm || isQti;
+  const isHardBlockedAssessment = isSelfAssess || isQuestionSet || isQti;
   const maxAttempts = node.maxAttempts;
   const attemptInfo = contentAttemptInfoMap?.[node.identifier];
   const attemptCount = attemptInfo?.attemptCount ?? 0;

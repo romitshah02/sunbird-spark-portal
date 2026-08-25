@@ -340,6 +340,12 @@ describe('enrollmentMapper', () => {
       expect(isSelfAssess({ ...node, mimeType: 'application/vnd.sunbird.question' })).toBe(true);
       expect(isSelfAssess({ ...node, contentType: 'Resource', mimeType: 'application/vnd.sunbird.questionset' })).toBe(true);
     });
+
+    it('returns true for a QTI mimeType even when contentType is not SelfAssess (e.g. missing/mislabeled)', () => {
+      const node: HierarchyContentNode = { identifier: 'q3', mimeType: 'application/vnd.ekstep.qti-archive' };
+      expect(isSelfAssess(node)).toBe(true);
+      expect(isSelfAssess({ ...node, contentType: 'Resource' })).toBe(true);
+    });
   });
 
   describe('getContentAttemptInfoMap', () => {

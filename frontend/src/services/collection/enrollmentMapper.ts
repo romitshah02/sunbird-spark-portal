@@ -66,14 +66,18 @@ export function getContentStatusMap(contentList: ContentStateItem[]): Record<str
  * Whether the hierarchy node is SelfAssess (quiz) — attempt limits apply only
  * to these. `contentType` is a creator-chosen taxonomy label and isn't always
  * set to 'SelfAssess' even for genuine QuML content, so also match on the
- * structural `mimeType` (both QuML mimeTypes — `questionset` and `question` —
- * are treated as self-assess here, a broader match than ContentRow's
- * isAssessmentContent, which only checks `questionset`).
+ * structural `mimeType` (QuML's `questionset`/`question` and QTI's
+ * `qti-archive` are treated as self-assess here, a broader match than
+ * ContentRow's isAssessmentContent, which only checks `questionset`).
  */
 export function isSelfAssess(node: HierarchyContentNode | null | undefined): boolean {
   if ((node?.contentType ?? '') === 'SelfAssess') return true;
   const mimeType = node?.mimeType ?? '';
-  return mimeType === 'application/vnd.sunbird.questionset' || mimeType === 'application/vnd.sunbird.question';
+  return (
+    mimeType === 'application/vnd.sunbird.questionset' ||
+    mimeType === 'application/vnd.sunbird.question' ||
+    mimeType === 'application/vnd.ekstep.qti-archive'
+  );
 }
 
 export interface ContentScoreInfo {
